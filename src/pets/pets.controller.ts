@@ -9,7 +9,9 @@ import {
   Query,
   UseGuards,
   Request,
-} from '@nestjs/common';
+} 
+
+from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -26,7 +28,10 @@ import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
 import { SearchPetsDto } from './dto/search-pets.dto';
 import { UserRole } from '../common/enums';
+import { SkipThrottle } from '@nestjs/throttler';
 
+
+@SkipThrottle()
 @ApiTags('Pets')
 @Controller('pets')
 export class PetsController {
@@ -52,6 +57,7 @@ export class PetsController {
     description:
       'Returns paginated list of pets with optional filtering and computed availability',
   })
+  
   @ApiResponse({
     status: 200,
     description: 'Paginated pets list',
@@ -154,6 +160,7 @@ export class PetsController {
       },
     },
   })
+
   @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
   @ApiResponse({ status: 404, description: 'Pet not found' })
   @ApiBearerAuth('JWT-auth')
@@ -164,3 +171,4 @@ export class PetsController {
     return this.petsService.remove(id, req.user.role);
   }
 }
+
